@@ -7,7 +7,7 @@ const getAllTasks = asyncWrapper(async (req, res) => {
   const filter = {};
   let { stage } = req.query;
 
-  // Фильтрация по строковому имени стадии, а не по ObjectId
+  // Фильтрация по строковому имени стадии
   if (typeof stage === 'string') {
     // Если передан ObjectId, находим стадию и получаем её имя
     const stageDoc = await Stage.findById(stage);
@@ -116,3 +116,4 @@ module.exports = {
   updateTask,
   deleteTask,
 };
+
