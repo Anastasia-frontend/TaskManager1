@@ -110,7 +110,7 @@ $(function () {
         return filtered;
     }
 
-    // Отображение задач с датами и правильной структурой
+    // Отображение задач с датами и структурой
     function renderTasks() {
         $('.tasks-container').empty();
 
@@ -259,7 +259,7 @@ $(function () {
                 
                 console.log('Задача обновлена');
         } else {
-            // СОЗДАНИЕ НОВОЙ задачи — теперь с правильным прогрессом!
+            // Создание новой задачи
         const completeProgress = parseInt($('#task-form [name="progress"]').val()) || 0;
 
         const createData = {
@@ -295,7 +295,7 @@ $(function () {
         }
     });
 
-    // Контекстное меню с правильной работой
+    // Контекстное меню
     $('#context-menu').on('click', 'button', async function() {
         const action = $(this).data('action');
         $('#context-menu').removeClass('active');
@@ -469,4 +469,5 @@ $(function () {
     loadStages().then(() => {
         loadTasks();
     });
+
 });
