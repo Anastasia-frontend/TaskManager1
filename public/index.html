@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task Manager</title>
+    
+    <!-- Шрифт и иконки -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    
+    <!-- Путь к стилям согласно заданию (файлы стилей в подкаталоге styles) -->
+    <link rel="stylesheet" href="styles/design.css">
+</head>
+<body>
+
+<div class="app">
+
+    <!-- Шапка -->
+    <header class="header">
+        <h1>Task Manager</h1>
+        <!-- Иконка "+ в круге" согласно заданию -->
+        <button id="add-task-btn" class="add-btn">
+            <i class="fas fa-plus-circle"></i>
+        </button>
+    </header>
+
+    <!-- Основные колонки -->
+    <div class="columns">
+
+        <!-- Task Ready -->
+        <div class="column" data-status="ready">
+            <div class="column-header">
+                <h2>Task Ready</h2>
+                <div class="sort-dropdown">
+                    <button class="column-menu"><i class="fas fa-ellipsis-h"></i></button>
+                    <div class="sort-menu">
+                        <button class="sort-item" data-sort="title">По наименованию</button>
+                        <button class="sort-item" data-sort="created">По дате создания</button>
+                        <button class="sort-item" data-sort="due">По планируемой дате</button>
+                    </div>
+                </div>
+            </div>
+            <div class="tasks-container"></div>
+        </div>
+
+        <!-- In Progress -->
+        <div class="column" data-status="progress">
+            <div class="column-header">
+                <h2>In Progress</h2>
+                <div class="sort-dropdown">
+                    <button class="column-menu"><i class="fas fa-ellipsis-h"></i></button>
+                    <div class="sort-menu">
+                        <button class="sort-item" data-sort="title">По наименованию</button>
+                        <button class="sort-item" data-sort="created">По дате создания</button>
+                        <button class="sort-item" data-sort="due">По планируемой дате</button>
+                    </div>
+                </div>
+            </div>
+            <div class="tasks-container"></div>
+        </div>
+
+        <!-- Needs Review -->
+        <div class="column" data-status="review">
+            <div class="column-header">
+                <h2>Needs Review</h2>
+                <div class="sort-dropdown">
+                    <button class="column-menu"><i class="fas fa-ellipsis-h"></i></button>
+                    <div class="sort-menu">
+                        <button class="sort-item" data-sort="title">По наименованию</button>
+                        <button class="sort-item" data-sort="created">По дате создания</button>
+                        <button class="sort-item" data-sort="due">По планируемой дате</button>
+                    </div>
+                </div>
+            </div>
+            <div class="tasks-container"></div>
+        </div>
+
+        <!-- Done -->
+        <div class="column" data-status="done">
+            <div class="column-header">
+                <h2>Done</h2>
+                <div class="sort-dropdown">
+                    <button class="column-menu"><i class="fas fa-ellipsis-h"></i></button>
+                    <div class="sort-menu">
+                        <button class="sort-item" data-sort="title">По наименованию</button>
+                        <button class="sort-item" data-sort="created">По дате создания</button>
+                        <button class="sort-item" data-sort="due">По планируемой дате</button>
+                    </div>
+                </div>
+            </div>
+            <div class="tasks-container"></div>
+        </div>
+
+    </div>
+
+    <!-- Блок Task Progress - показывает прогресс выполненных задач относительно всех -->
+    <div class="overall-progress">
+        <div class="progress-header">
+            <span>Task Progress</span>
+            <span id="progress-percent">0%</span>
+        </div>
+        <div class="progress-bar-big">
+            <div id="progress-fill"></div>
+        </div>
+        <div class="progress-counter">
+            Выполнено: <strong id="done-count">0</strong> из <strong id="total-count">0</strong>
+        </div>
+    </div>
+
+</div>
+
+<!-- Модалка создания/редактирования задачи -->
+<div class="modal" id="task-modal">
+    <div class="modal-content">
+        <h3 id="modal-title">Создать задание</h3>
+        <form id="task-form">
+            <input type="text" name="title" placeholder="Наименование" required>
+            <textarea name="description" placeholder="Текст задания" required></textarea>
+            <input type="date" name="dueDate" required>
+            
+            <!-- Селект будет заполняться стадиями из API -->
+            <select name="stage" id="stage-select" required>
+                <option value="">Загрузка...</option>
+            </select>
+
+            <!-- Прогресс в виде бегунка от 0 до 100 -->
+            <div class="progress-group">
+                <label>Прогресс: <span id="progress-value">0</span>%</label>
+                <input type="range" name="progress" min="0" max="100" value="0">
+            </div>
+
+            <div class="modal-actions">
+                <button type="submit" class="btn-save">Сохранить</button>
+                <button type="button" class="btn-cancel">Отмена</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Подтверждение удаления с правильным текстом согласно заданию -->
+<div class="modal" id="delete-modal">
+    <div class="modal-content">
+        <h3>Удалить задание?</h3>
+        <p>Вы уверены, что хотите удалить задание? Данное действие будет необратимо.</p>
+        <div class="modal-actions">
+            <button class="btn-delete" id="confirm-delete">Удалить</button>
+            <button class="btn-cancel">Отмена</button>
+        </div>
+    </div>
+</div>
+
+<!-- Контекстное меню на карточке (троеточие) -->
+<div class="context-menu" id="context-menu">
+    <button data-action="edit">Редактировать</button>
+    <button data-action="delete">Удалить</button>
+</div>
+
+<!-- Пути к скриптам согласно заданию (файлы скриптов в подкаталоге scripts) -->
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script src="scripts/script.js"></script>
+
+</body>
+</html>
