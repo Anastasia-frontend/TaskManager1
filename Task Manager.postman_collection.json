@@ -1,0 +1,177 @@
+{
+	"info": {
+		"_postman_id": "52476606-53b2-4c88-bcec-cda9b445756a",
+		"name": "Task Manager",
+		"description": "**Task Manager Backend API**",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "13570829"
+	},
+	"item": [
+		{
+			"name": "Tasks",
+			"item": [
+				{
+					"name": "Создать задание",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"title\": \"Task Manager\",\r\n    \"value\": \"Текст таска\",\r\n    \"expiredDate\": \"1662066293004\",\r\n    \"stage\": \"6310d55e6ae4c324fce31703\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/api/v1/tasks",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"v1",
+								"tasks"
+							]
+						},
+						"description": "**Создает задание**\n\n  \n\"title\": \"Написать Task Manager\", Наименование задания  \n\"value\": \"Текст таска\", Текст задания  \n\"expiredDate\": \"1662066293004\", Дата предполагаемого окончания задания  \n\"stage\": \"6310d55e6ae4c324fce31703\" id стадии, получаемый из запроса всех стадий и выбранный в интерфейсе"
+					},
+					"response": []
+				},
+				{
+					"name": "Получить все задания",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:3000/api/v1/tasks",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"v1",
+								"tasks"
+							],
+							"query": [
+								{
+									"key": "stage",
+									"value": "6310d55e6ae4c324fce31703",
+									"disabled": true
+								}
+							]
+						},
+						"description": "**Загружает список всех заданий**\n\nВозможно задать фильтрацию, чтобы получить список всех заданий определенной стадии.\n\nlocalhost:3000/api/v1/tasks?stage=6310d55e6ae4c324fce31703"
+					},
+					"response": []
+				},
+				{
+					"name": "Получить задание по id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:3000/api/v1/tasks/6311029b558244338c6eda7f",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"v1",
+								"tasks",
+								"6311029b558244338c6eda7f"
+							]
+						},
+						"description": "**Загружает информацию о конкретном задании по его id, например для последующего редактирования**\n\nВозвращаемая информация:\n\n``` json\n\"task\": {\n    \"creationDate\": \"2022-09-01T21:41:31.567Z\", - Дата создания, создается автоматически\n    \"updateDate\": \"2022-09-01T21:41:31.567Z\", - Дата последнего редактирования, создается автоматически\n    \"completeProgress\": 0, - Прогресс выполнения от 0 до 100\n    \"_id\": \"6311029b558244338c6eda7f\", - id задания в базе\n    \"title\": \"Task Manager\", - Наименование задания\n    \"value\": \"Текст таска\", - Текст задания\n    \"expiredDate\": \"2022-09-02T00:04:53.004Z\", - Дата предполагаемого выполнения задания\n    \"stage\": \"6310f39f69c9c4498c1860e4\", - id стадии задания\n    \"__v\": 0 - служебная инфа\n}\n\n```"
+					},
+					"response": []
+				},
+				{
+					"name": "Обновить задание по id",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"completeProgress\": 100,\r\n    \"title\": \"Task Manager\",\r\n    \"value\": \"Текст таска\",\r\n    \"expiredDate\": \"2022-09-02T00:04:53.004Z\",\r\n    \"stage\": \"6310d55e6ae4c324fce31703\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/api/v1/tasks/6310e63cd226232f50f47129",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"v1",
+								"tasks",
+								"6310e63cd226232f50f47129"
+							]
+						},
+						"description": "**Обновляет параметры задания**\n\n``` json\n{\n  \"completeProgress\": 100, - Прогресс выполнения задания от 0 до 100 %\n  \"title\": \"Task Manager\", - Наименование задания\n  \"value\": \"Текст таска\", - Текст задания\n  \"expiredDate\": \"2022-09-02T00:04:53.004Z\", - Дата предполагаемого завершения задания\n  \"stage\": \"6310d55e6ae4c324fce31703\" - Стадия задания\n}\n\n```"
+					},
+					"response": []
+				},
+				{
+					"name": "Удалить задание по id",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "localhost:3000/api/v1/tasks/6310b6f46cee9727d046901e",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"v1",
+								"tasks",
+								"6310b6f46cee9727d046901e"
+							]
+						},
+						"description": "**Удаляет задание по его id**"
+					},
+					"response": []
+				}
+			],
+			"description": "**Эндпоинты для работы с заданиями**"
+		},
+		{
+			"name": "Stages",
+			"item": [
+				{
+					"name": "Получить стадии",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:3000/api/v1/stages",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"v1",
+								"stages"
+							]
+						},
+						"description": "**Загружает список всех стадий, которые могут иметь задания**\n\n'ready' - Только что созданное задание, назначается по умолчанию при создании задания  \n'progress' - Задание в процессе выполнения  \n'review' - Задание требует валидации со стороны ревьювера  \n'done' - Задание выполнено"
+					},
+					"response": []
+				}
+			],
+			"description": "**Эндпоинты для работы со стадиями**"
+		}
+	]
+}
